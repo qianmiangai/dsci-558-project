@@ -60,7 +60,7 @@ def color_hex_to_color_group(hexcodes):
     """
     hexcodes: list of four hexcodes
     """
-    with open("./hexcode_to_colorgroup.pickle", "rb") as f:
+    with open("../data/hexcode_to_colorgroup.pickle", "rb") as f:
         hex_to_group_dict = pickle.load(f)
     color_groups = []
     for hex in hexcodes:
