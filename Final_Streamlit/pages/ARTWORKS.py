@@ -8,7 +8,7 @@ import urllib.request
 from helper import load_image, extract_color_palette, color_hex_to_color_group
 
 
-raw = pd.read_csv('../data/Final_Dataset_w_colorgroup.csv')
+raw = pd.read_csv('../../FinalDataSetCreation/FinalDataset_with_all.csv')
 
 df = raw.copy() ## dataframe that would not change
 
@@ -51,12 +51,11 @@ with search_filter:
         uploaded_image = load_image(uploaded_file)
         st.image(uploaded_image,width=250) # view image
         palette = extract_color_palette(uploaded_image)
-        top_four_colors = palette.iloc[:4, 0].tolist()
+        top_four_colors = palette.iloc[:2, 0].tolist()
         top_four_color_groups = color_hex_to_color_group(top_four_colors)
         # print(top_four_color_groups)
         # print(filtered_dataF.head())
-        filtered_dataF = filtered_dataF[filtered_dataF['color_group1'].isin(top_four_color_groups) |  filtered_dataF['color_group2'].isin(top_four_color_groups)\
-            |filtered_dataF['color_group3'].isin(top_four_color_groups)|filtered_dataF['color_group4'].isin(top_four_color_groups)]
+        filtered_dataF = filtered_dataF[filtered_dataF['color_group1'].isin(top_four_color_groups) |  filtered_dataF['color_group2'].isin(top_four_color_groups)]
         # print(temp)
 
 
