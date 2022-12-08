@@ -173,15 +173,19 @@ with artworks:
                 artist_artwork_df = df[(df['artist_name']==current_artist) & (df['id']!=current_artworkID)]
                 artist_artwork_df = artist_artwork_df.reset_index(drop=True)
                 #st.dataframe(artist_artwork_df)
-                for i in range(min(4, len(artist_artwork_df))): 
-                    image = Image.open(urllib.request.urlopen(artist_artwork_df['img_url'][i]))
-                    artworks_cols[i].image(image, use_column_width=True, caption=artist_artwork_df['work_name'][i])
+                for n in range(min(4, len(artist_artwork_df))): 
+                    image = Image.open(urllib.request.urlopen(artist_artwork_df['img_url'][n]))
+                    artworks_cols[n].image(image, use_column_width=True, caption=artist_artwork_df['work_name'][n])
 
 
                 st.subheader('Other Artworks You Might Like')
                 reccommendation_cols = st.columns(4)
 
+                #st.dataframe(current_page_dataF)
+                #st.write(i)
+
                 temp_list = list(current_page_dataF.loc[i, ['similar1_x','similar2_x','similar3_x','similar4_x','similar5_x','similar6_x','similar7_x','similar8_x']])
+                
                 #st.write(temp_list)
                 for temp_i in range(len(reccommendation_cols)):
                     temp_row = df.loc[df['id']==temp_list[temp_i]]

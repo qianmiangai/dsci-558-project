@@ -39,18 +39,21 @@ with search_filter:
     color2 = col3.color_picker(' ', key='color2', value='#FF0000')
     color3 = col4.color_picker(' ', key='color3', value='#00FF00')
     color4 = col5.color_picker(' ', key='color4', value='#0000FF')
-    four_colors = [color1, color2, color3, color4]
-    four_color_groups = color_hex_to_color_group(four_colors)
-    filtered_dataF = filtered_dataF[filtered_dataF['color_group1'].isin(four_color_groups) | filtered_dataF['color_group1'].isin(four_color_groups) | filtered_dataF['color_group3'].isin(four_color_groups) | filtered_dataF['color_group4'].isin(four_color_groups)]
 
     uploaded_file = st.file_uploader("Choose a file")
+
+    if uploaded_file is None:
+        four_colors = [color1, color2, color3, color4]
+        four_color_groups = color_hex_to_color_group(four_colors)
+        filtered_dataF = filtered_dataF[filtered_dataF['color_group1'].isin(four_color_groups) | filtered_dataF['color_group1'].isin(four_color_groups) | filtered_dataF['color_group3'].isin(four_color_groups) | filtered_dataF['color_group4'].isin(four_color_groups)]
+
     if uploaded_file is not None:
         uploaded_image = load_image(uploaded_file)
         st.image(uploaded_image,width=250) # view image
         palette = extract_color_palette(uploaded_image)
-        top_four_colors = palette.iloc[:2, 0].tolist()
+        top_four_colors = palette.iloc[:4, 0].tolist()
         top_four_color_groups = color_hex_to_color_group(top_four_colors)
-        filtered_dataF = df[df['color_group1'].isin(top_four_color_groups) | df['color_group2'].isin(top_four_color_groups | df['color_group3'].isin(top_four_color_groups) | df['color_group4'].isin(top_four_color_groups))]
+        filtered_dataF = filtered_dataF[filtered_dataF['color_group1'].isin(top_four_color_groups) | filtered_dataF['color_group2'].isin(top_four_color_groups) | filtered_dataF['color_group3'].isin(top_four_color_groups) | filtered_dataF['color_group4'].isin(top_four_color_groups)]
 
 with dataset:
     #st.header('data')
