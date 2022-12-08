@@ -1,0 +1,62 @@
+1. 
+
+CALL db.schema.visualization();
+
+2.
+
+CALL gds.graph.project(
+  'test',
+  {Artork:{properties:['price']},
+  Artist:{},
+  Color:{},
+  Style:{}},
+  {
+    CREATED: {
+      orientation:'UNDIRECTED'
+    },
+    HASCOLOR: {
+      orientation:'NATURAL'
+    },
+    HASSTYLE: {
+      orientation:'NATURAL'
+    }
+  }
+)
+YIELD graphName as graph, nodeProjection, nodeCount AS nodes, relationshipCount AS rels
+
+3. 
+
+CALL gds.fastRP.mutate('test',
+  {
+    embeddingDimension: 4,
+    randomSeed: 42,
+    mutateProperty: 'embedding',
+    iterationWeights: [0.8, 1, 1, 1]
+  }
+)
+YIELD nodePropertiesWritten
+
+4.
+
+CALL gds.knn.write('test', {
+    topK: 5,
+    nodeProperties: ['embedding'],
+    randomSeed: 42,
+    concurrency: 1,
+    sampleRate: 1.0,
+    deltaThreshold: 0.0,
+    writeRelationshipType: "SIMILAR",
+    writeProperty: "score"
+})
+YIELD nodesCompared, relationshipsWritten, similarityDistribution
+RETURN nodesCompared, relationshipsWritten, similarityDistribution.mean as meanSimilarity
+
+5.
+
+MATCH (n:Artork)-[r:SIMILAR]->(m:Artork)
+//WHERE ...
+RETURN n.name as art1, m.name as art2, r.score as similarity
+ORDER BY similarity DESCENDING, art1,art2
+
+
+
